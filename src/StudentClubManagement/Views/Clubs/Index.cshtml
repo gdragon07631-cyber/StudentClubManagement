@@ -1,0 +1,19 @@
+@model IEnumerable<StudentClubManagement.ViewModels.ClubListItemViewModel>
+@{ ViewData["Title"] = "Quản lý câu lạc bộ"; }
+<header class="page-header">
+    <div><div class="page-eyebrow">Dành cho Admin</div><h1 class="page-title">Quản lý câu lạc bộ</h1><p class="page-subtitle">Admin quản lý toàn bộ câu lạc bộ trong hệ thống.</p></div>
+    <div class="page-actions"><a class="btn btn-primary btn-icon" asp-action="Create"><svg><use href="#i-plus"/></svg>Thêm câu lạc bộ</a></div>
+</header>
+<section class="department-grid">
+@foreach (var club in Model)
+{
+    <article class="department-card surface">
+        <span class="metric-icon"><svg><use href="#i-building"/></svg></span>
+        <h3>@club.ClubName</h3>
+        <p>@(club.Description ?? "Chưa có mô tả.")</p>
+        <div class="department-stats"><span><span>Thành viên</span><strong>@club.MemberCount</strong></span><span><span>Hoạt động</span><strong>@club.ActivityCount</strong></span><span><span>Cuộc họp</span><strong>@club.MeetingCount</strong></span></div>
+        <div class="d-flex gap-2 mt-3"><a class="btn btn-light btn-sm flex-fill" asp-controller="Members" asp-route-clubId="@club.Id">Xem thành viên</a><a class="btn btn-primary btn-sm flex-fill" asp-action="Edit" asp-route-id="@club.Id">Cập nhật</a></div>
+    </article>
+}
+</section>
+@if (!Model.Any()) { <div class="surface empty-state">Chưa có câu lạc bộ. Hãy tạo câu lạc bộ đầu tiên.</div> }

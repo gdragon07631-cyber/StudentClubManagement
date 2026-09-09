@@ -1,0 +1,2 @@
+@model StudentClubManagement.Models.MembershipApplication
+<h1>Trạng thái đăng ký</h1>@if(Model==null){<div class="alert alert-warning">Không tìm thấy đơn đăng ký.</div>}else{<div class="card card-body"><h2 class="h4">@Model.FullName</h2><p>MSSV: @Model.StudentCode</p><p>Trạng thái: <strong>@Model.Status</strong></p>@if(Model.Status=="APPROVED"){<p>Đơn đã được duyệt. Vui lòng liên hệ quản trị viên hoặc trưởng ban để nhận tài khoản và mật khẩu đăng nhập.</p>}@if(Model.Status=="REJECTED"){<p>Lý do: @Model.RejectionReason</p>}</div>}

@@ -1,0 +1,24 @@
+@model StudentClubManagement.ViewModels.DashboardViewModel
+@{ ViewData["Title"] = "Dashboard câu lạc bộ"; }
+<header class="page-header">
+    <div><div class="page-eyebrow">Quản lý câu lạc bộ</div><h1 class="page-title">Dashboard @(Model.ClubName ?? "của Trưởng câu lạc bộ")</h1><p class="page-subtitle">Chào @Model.DisplayName. Dưới đây là tiến độ nhiệm vụ và hoạt động thuộc câu lạc bộ của bạn.</p></div>
+    <div class="page-actions"><a class="btn btn-light btn-icon" asp-controller="Reports"><svg><use href="#i-chart"/></svg>Xem báo cáo CLB</a><a class="btn btn-primary btn-icon" asp-controller="ClubTasks" asp-action="Create"><svg><use href="#i-plus"/></svg>Tạo nhiệm vụ mới</a></div>
+</header>
+<section class="metric-grid">
+    <a class="metric-card surface" asp-controller="Members"><span class="metric-icon"><svg><use href="#i-users"/></svg></span><div class="metric-label">Thành viên câu lạc bộ</div><div class="metric-value">@Model.Members <small>thành viên</small></div><div class="metric-note success">Theo phạm vi phân quyền</div></a>
+    <a class="metric-card surface" asp-controller="ClubTasks"><span class="metric-icon"><svg><use href="#i-clipboard"/></svg></span><div class="metric-label">Nhiệm vụ của CLB</div><div class="metric-value">@Model.OpenTasks <small>đang mở</small></div><div class="metric-note">Trong danh sách liên quan</div></a>
+    <a class="metric-card surface" asp-controller="Activities"><span class="metric-icon"><svg><use href="#i-calendar"/></svg></span><div class="metric-label">Hoạt động CLB</div><div class="metric-value">@Model.Activities <small>hoạt động</small></div><div class="metric-note">Lịch sự kiện hiện có</div></a>
+    <a class="metric-card surface" asp-controller="Notifications"><span class="metric-icon"><svg><use href="#i-bell"/></svg></span><div class="metric-label">Thông báo mới</div><div class="metric-value">@Model.UnreadNotifications <small>chưa đọc</small></div><div class="metric-note">Thông báo dành cho bạn</div></a>
+</section>
+<div class="dashboard-grid">
+    <div class="stack">
+        <section class="surface section-card"><div class="section-heading"><div><h2>Nhiệm vụ cần xử lý &amp; sắp đến hạn</h2><p>Ưu tiên phân công và theo dõi tiến độ đúng hạn.</p></div><a class="section-link" asp-controller="ClubTasks">Xem tất cả (@Model.MyTasks.Count())</a></div>
+        @if (Model.MyTasks.Any()) { @foreach (var task in Model.MyTasks.Take(4)) { var badge = task.Priority == "HIGH" ? "danger" : task.Progress > 0 ? "primary" : "warning"; <article class="task-item"><div class="task-top"><div><span class="status-badge @badge">@task.Priority</span><div class="task-title">@task.Title</div><div class="task-meta">Phụ trách: @(task.Assignments.Any() ? string.Join(", ", task.Assignments.Select(x => x.Member.FullName)) : "Chưa phân công") · Hạn: @(task.DueDate?.ToString("dd/MM/yyyy") ?? "Chưa đặt")</div></div><strong>@task.Progress%</strong></div><div class="progress-label"><span>Tiến độ thực hiện</span><span>@task.Status</span></div><div class="progress"><div class="progress-bar" style="width:@task.Progress%"></div></div></article> } } else { <div class="empty-state">Chưa có nhiệm vụ trong phạm vi ban.</div> }
+        </section>
+        <section class="surface section-card"><div class="section-heading"><div><h2>Thành viên &amp; mức độ tham gia</h2><p>Danh sách chi tiết và điểm được giữ trong module tương ứng.</p></div><a class="section-link" asp-controller="Members">Xem thành viên CLB →</a></div><div class="p-4 d-flex flex-wrap gap-2"><a class="btn btn-light" asp-controller="Members">Hồ sơ thành viên</a><a class="btn btn-light" asp-controller="Points">Điểm hoạt động</a><a class="btn btn-light" asp-controller="Reports">Thống kê câu lạc bộ</a></div></section>
+    </div>
+    <aside class="stack dashboard-aside">
+        <section class="surface ai-panel"><h2>Gợi ý phân công từ AI</h2><p>Chọn một nhiệm vụ trong danh sách để yêu cầu AI phân tích ứng viên phù hợp. Bạn luôn là người xác nhận cuối cùng.</p><a class="btn" asp-controller="ClubTasks">Chọn nhiệm vụ để gợi ý</a></section>
+        <section class="surface section-card"><div class="section-heading no-border"><div><h2>Lịch họp &amp; sự kiện</h2><p>Lịch gần nhất liên quan đến CLB.</p></div><a class="section-link" asp-controller="Meetings">Xem lịch</a></div><div class="calendar-list">@foreach (var meeting in Model.UpcomingMeetings) { <article class="calendar-item"><span class="status-badge primary">@meeting.Status</span><h3>@meeting.Title</h3><p>@meeting.MeetingTime.ToString("dd/MM/yyyy HH:mm") · @(meeting.Location ?? "Chưa có địa điểm")</p></article> } @if (!Model.UpcomingMeetings.Any()) { <div class="empty-state">Chưa có cuộc họp.</div> }</div></section>
+    </aside>
+</div>

@@ -1,0 +1,12 @@
+@using StudentClubManagement.Models
+@model Activity
+@{ ViewData["Title"] = "Tạo hoạt động"; }
+<h1>Tạo hoạt động</h1>
+<form method="post" class="card card-body">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    @if (User.IsInRole(AppRoles.Admin)) { <label asp-for="ClubId">Câu lạc bộ</label><select asp-for="ClubId" asp-items="ViewBag.Clubs" class="form-select mb-2"><option value="">-- Chọn câu lạc bộ --</option></select> }
+    <label asp-for="ActivityName">Tên hoạt động</label><input asp-for="ActivityName" class="form-control mb-2"/>
+    <label asp-for="Description">Mô tả</label><textarea asp-for="Description" class="form-control mb-2"></textarea>
+    <div class="row"><div class="col"><label asp-for="StartTime">Bắt đầu</label><input asp-for="StartTime" class="form-control"/></div><div class="col"><label asp-for="EndTime">Kết thúc</label><input asp-for="EndTime" class="form-control"/></div></div>
+    <label asp-for="Location">Địa điểm</label><input asp-for="Location" class="form-control mb-3"/><button class="btn btn-primary">Lưu</button>
+</form>

@@ -1,0 +1,30 @@
+@using StudentClubManagement.Models
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string Active(params string[] names) => names.Contains(controller, StringComparer.OrdinalIgnoreCase) ? "active" : "";
+}
+<aside class="sidebar" id="appSidebar">
+    <div class="sidebar-brand-row"><a class="brand" asp-controller="Dashboard" asp-action="Index"><span class="brand-mark">C</span><span class="brand-name">Hệ thống quản lý CLB sinh viên</span></a><button class="sidebar-close" type="button" aria-label="Đóng menu">×</button></div>
+    <nav class="sidebar-nav" aria-label="Điều hướng chính">
+        <div class="nav-section">@(User.IsInRole(AppRoles.Admin) ? "Quản trị hệ thống" : User.IsInRole(AppRoles.ClubLeader) ? "Quản lý câu lạc bộ" : "Khu vực thành viên")</div>
+        <a class="side-link @Active("Dashboard")" asp-controller="Dashboard" asp-action="Index"><svg><use href="#i-grid"/></svg><span>Tổng quan</span></a>
+        @if (User.IsInRole(AppRoles.Admin))
+        {
+            <a class="side-link @Active("Users")" asp-controller="Users" asp-action="Index"><svg><use href="#i-user"/></svg><span>Quản lý tài khoản</span></a>
+            <a class="side-link @Active("Clubs")" asp-controller="Clubs" asp-action="Index"><svg><use href="#i-building"/></svg><span>Quản lý câu lạc bộ</span></a>
+        }
+        @if (!User.IsInRole(AppRoles.Member)) { <a class="side-link @Active("MembershipApplications")" asp-controller="MembershipApplications" asp-action="Index"><svg><use href="#i-clipboard"/></svg><span>Đơn đăng ký</span></a> }
+        <a class="side-link @Active("Members")" asp-controller="Members" asp-action="Index"><svg><use href="#i-users"/></svg><span>@(User.IsInRole(AppRoles.ClubLeader) ? "Thành viên câu lạc bộ" : User.IsInRole(AppRoles.Member) ? "Hồ sơ của tôi" : "Quản lý thành viên")</span></a>
+        <a class="side-link @Active("Activities")" asp-controller="Activities" asp-action="Index"><svg><use href="#i-calendar"/></svg><span>Sự kiện &amp; Hoạt động</span></a>
+        <a class="side-link @Active("ClubTasks")" asp-controller="ClubTasks" asp-action="Index"><svg><use href="#i-check"/></svg><span>@(User.IsInRole(AppRoles.Member) ? "Nhiệm vụ của tôi" : "Nhiệm vụ CLB")</span></a>
+        <a class="side-link @Active("Meetings")" asp-controller="Meetings" asp-action="Index"><svg><use href="#i-calendar"/></svg><span>Cuộc họp</span></a>
+        <a class="side-link @Active("Points")" asp-controller="Points" asp-action="Index"><svg><use href="#i-star"/></svg><span>Điểm hoạt động</span></a>
+        @if (User.IsInRole(AppRoles.Admin)) { <a class="side-link @Active("Finance")" asp-controller="Finance" asp-action="Index"><svg><use href="#i-wallet"/></svg><span>Tài chính &amp; Quỹ</span></a> }
+        @if (!User.IsInRole(AppRoles.Member)) { <a class="side-link @Active("Reports")" asp-controller="Reports" asp-action="Index"><svg><use href="#i-chart"/></svg><span>@(User.IsInRole(AppRoles.Admin) ? "Thống kê & Báo cáo" : "Thống kê câu lạc bộ")</span></a> }
+        <a class="side-link @Active("Notifications")" asp-controller="Notifications" asp-action="Index"><svg><use href="#i-bell"/></svg><span>Thông báo</span></a>
+        <div class="nav-section mt-4">Trợ lý AI Campus</div>
+        <a class="side-link @Active("AI")" asp-controller="AI" asp-action="Chat"><svg><use href="#i-spark"/></svg><span>Chatbot AI</span></a>
+        @if (!User.IsInRole(AppRoles.Member)) { <a class="side-link" asp-controller="ClubTasks" asp-action="Index"><svg><use href="#i-spark"/></svg><span>AI gợi ý phân công</span></a> }
+    </nav>
+    <div class="sidebar-footer"><a class="side-link" asp-controller="Account" asp-action="ChangePassword"><svg><use href="#i-user"/></svg><span>Đổi mật khẩu</span></a><form asp-controller="Account" asp-action="Logout" method="post"><button class="side-link logout-link" type="submit"><svg><use href="#i-logout"/></svg><span>Đăng xuất</span></button></form></div>
+</aside>

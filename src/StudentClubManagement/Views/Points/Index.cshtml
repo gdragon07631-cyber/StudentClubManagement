@@ -1,0 +1,3 @@
+@using StudentClubManagement.Models
+@model IEnumerable<PointHistory>
+<h1>Lịch sử điểm hoạt động</h1><div class="alert alert-info">Điểm luôn được lưu theo lịch sử và nguồn; dữ liệu demo không phải công thức điểm chính thức.</div><div class="table-responsive"><table class="table"><thead><tr><th>Thành viên</th><th>Quy tắc</th><th>Nguồn</th><th>Điểm</th><th>Lý do</th><th>Thời gian</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.Member.FullName</td><td>@x.PointRule.RuleName</td><td>@x.SourceType #@x.SourceId</td><td>@x.Points</td><td>@x.Reason</td><td>@x.RecordedAt.ToLocalTime().ToString("dd/MM/yyyy")</td></tr>}</tbody></table></div>

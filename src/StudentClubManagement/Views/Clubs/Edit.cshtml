@@ -1,0 +1,4 @@
+@model StudentClubManagement.ViewModels.ClubFormViewModel
+@{ ViewData["Title"] = "Cập nhật câu lạc bộ"; }
+<header class="page-header"><div><div class="page-eyebrow">Dành cho Admin</div><h1 class="page-title">Cập nhật câu lạc bộ</h1></div></header>
+<form method="post" class="surface card-body col-xl-8"><input asp-for="Id" type="hidden"/><div asp-validation-summary="All" class="text-danger"></div><div class="mb-3"><label asp-for="ClubName" class="form-label"></label><input asp-for="ClubName" class="form-control"/><span asp-validation-for="ClubName" class="text-danger"></span></div><div class="mb-3"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" class="form-control" rows="5"></textarea></div><div class="d-flex gap-2"><button class="btn btn-primary">Lưu thay đổi</button><a class="btn btn-light" asp-action="Index">Hủy</a></div></form>

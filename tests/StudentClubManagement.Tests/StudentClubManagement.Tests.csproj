@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\StudentClubManagement\StudentClubManagement.csproj" ReferenceOutputAssembly="false" />
+    <!-- Link the exact production sources so tests can run under the host's DLL application-control policy. -->
+    <Compile Include="..\..\src\StudentClubManagement\Models\Common\DomainConstants.cs" Link="Production\Models\DomainConstants.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Identity\ApplicationUser.cs" Link="Production\Models\ApplicationUser.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Club\ClubModels.cs" Link="Production\Models\ClubModels.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Activities\ActivityModels.cs" Link="Production\Models\ActivityModels.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Tasks\TaskModels.cs" Link="Production\Models\TaskModels.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Meetings\MeetingModels.cs" Link="Production\Models\MeetingModels.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Points\PointModels.cs" Link="Production\Models\PointModels.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Finance\FinancialTransaction.cs" Link="Production\Models\FinancialTransaction.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\Notifications\Notification.cs" Link="Production\Models\Notification.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Models\AI\AiLog.cs" Link="Production\Models\AiLog.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Data\ApplicationDbContext.cs" Link="Production\ApplicationDbContext.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Data\Seed\DemoSeed.cs" Link="Production\Data\DemoSeed.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Authorization\AccessScopeService.cs" Link="Production\Authorization\AccessScopeService.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Services\Interfaces\IClubService.cs" Link="Production\Services\IClubService.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Services\ClubService.cs" Link="Production\Services\ClubService.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Services\AccountProvisioningService.cs" Link="Production\Services\AccountProvisioningService.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\ViewModels\Membership\*.cs" Link="Production\ViewModels\%(Filename)%(Extension)" />
+    <Compile Include="..\..\src\StudentClubManagement\Services\Interfaces\INotificationService.cs" Link="Production\Services\INotificationService.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Services\NotificationService.cs" Link="Production\Services\NotificationService.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Services\Interfaces\IAiService.cs" Link="Production\Services\IAiService.cs" />
+    <Compile Include="..\..\src\StudentClubManagement\Services\AI\AiService.cs" Link="Production\Services\AiService.cs" />
+  </ItemGroup>
+
+</Project>
