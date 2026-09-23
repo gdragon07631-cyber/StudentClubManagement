@@ -3,7 +3,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$studentCode = "SVCRUD01"
+$studentCode = "SVCRUD" + (Get-Random -Minimum 1000 -Maximum 9999)
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 
 function Get-AntiForgeryToken([string]$html) {
@@ -24,9 +24,10 @@ Invoke-WebRequest "$BaseUrl/Account/Login" -Method Post -WebSession $session -Us
 $createPage = Invoke-WebRequest "$BaseUrl/Members/Create" -WebSession $session -UseBasicParsing
 $createToken = Get-AntiForgeryToken $createPage.Content
 Invoke-WebRequest "$BaseUrl/Members/Create" -Method Post -WebSession $session -UseBasicParsing -Body @{
+    ClubId = 1
     StudentCode = $studentCode
     FullName = "CRUD Test Member"
-    Email = "crud.member@club.demo"
+    Email = "$studentCode@club.demo"
     ClassName = "CNTT-K22"
     Course = "K22"
     Phone = "0900000001"
@@ -34,7 +35,7 @@ Invoke-WebRequest "$BaseUrl/Members/Create" -Method Post -WebSession $session -U
 } | Out-Null
 
 $indexPage = Invoke-WebRequest "$BaseUrl/Members?q=$studentCode" -WebSession $session -UseBasicParsing
-$idMatch = [regex]::Match($indexPage.Content, 'Members/Details/(\d+)[^>]*>\s*SVCRUD01')
+$idMatch = [regex]::Match($indexPage.Content, "Members/Details/(\d+)[^>]*>(?:<[^>]+>)*\s*$studentCode")
 if (-not $idMatch.Success) { throw "CREATE/READ thất bại: không tìm thấy $studentCode trong danh sách." }
 $memberId = [int]$idMatch.Groups[1].Value
 
@@ -42,8 +43,9 @@ $editPage = Invoke-WebRequest "$BaseUrl/Members/Edit/$memberId" -WebSession $ses
 $editToken = Get-AntiForgeryToken $editPage.Content
 Invoke-WebRequest "$BaseUrl/Members/Edit/$memberId" -Method Post -WebSession $session -UseBasicParsing -Body @{
     Id = $memberId
+    ClubId = 1
     FullName = "CRUD Updated Member"
-    Email = "crud.updated@club.demo"
+    Email = "updated.$studentCode@club.demo"
     Phone = "0900000002"
     ClassName = "CNTT-K22A"
     Course = "K22"
@@ -53,7 +55,7 @@ Invoke-WebRequest "$BaseUrl/Members/Edit/$memberId" -Method Post -WebSession $se
 } | Out-Null
 
 $detailsPage = Invoke-WebRequest "$BaseUrl/Members/Details/$memberId" -WebSession $session -UseBasicParsing
-if ($detailsPage.Content -notmatch 'crud.updated@club.demo') { throw "UPDATE/READ thất bại." }
+if ($detailsPage.Content -notmatch "updated\.$studentCode@club\.demo") { throw "UPDATE/READ thất bại." }
 
 $statusToken = Get-AntiForgeryToken $indexPage.Content
 Invoke-WebRequest "$BaseUrl/Members/SetStatus" -Method Post -WebSession $session -UseBasicParsing -Body @{
