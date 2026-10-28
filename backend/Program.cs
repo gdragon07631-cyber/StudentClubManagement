@@ -29,7 +29,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(o =>
 var jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>() ?? new JwtOptions();
 if (string.IsNullOrWhiteSpace(jwt.Key) || jwt.Key.Length < 32) throw new InvalidOperationException("Jwt:Key phải có tối thiểu 32 ký tự (đặt qua biến môi trường Jwt__Key).");
 builder.Services.AddSingleton(jwt);
-builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o =>
 {
     o.MapInboundClaims = false; // giữ nguyên ClaimTypes.* như lúc phát hành token
