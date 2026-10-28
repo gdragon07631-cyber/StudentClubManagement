@@ -1,11 +1,6 @@
 <Solution>
-  <Folder Name="/backend/">
-    <Project Path="backend/StudentClubManagement.Api/StudentClubManagement.Api.csproj" />
-    <Project Path="backend/StudentClubManagement.Core/StudentClubManagement.Core.csproj" />
-  </Folder>
-  <Folder Name="/frontend/">
-    <Project Path="frontend/StudentClubManagement.Web/StudentClubManagement.Web.csproj" />
-  </Folder>
+  <Project Path="backend/StudentClubManagement.Backend.csproj" />
+  <Project Path="frontend/StudentClubManagement.Frontend.csproj" />
   <Folder Name="/tests/">
     <Project Path="tests/StudentClubManagement.Tests/StudentClubManagement.Tests.csproj" />
   </Folder>

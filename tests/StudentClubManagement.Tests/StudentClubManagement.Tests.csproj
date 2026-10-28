@@ -25,13 +25,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\backend\StudentClubManagement.Api\StudentClubManagement.Api.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\backend\StudentClubManagement.Backend.csproj" ReferenceOutputAssembly="false" />
     <!-- Link the exact production sources so tests can run under the host's DLL application-control policy. -->
-    <Compile Include="..\..\backend\StudentClubManagement.Core\Models\**\*.cs" Link="Production\Models\%(RecursiveDir)%(Filename)%(Extension)" />
-    <Compile Include="..\..\backend\StudentClubManagement.Core\ViewModels\**\*.cs" Link="Production\ViewModels\%(RecursiveDir)%(Filename)%(Extension)" />
-    <Compile Include="..\..\backend\StudentClubManagement.Api\Data\**\*.cs" Link="Production\Data\%(RecursiveDir)%(Filename)%(Extension)" />
-    <Compile Include="..\..\backend\StudentClubManagement.Api\Authorization\**\*.cs" Link="Production\Authorization\%(RecursiveDir)%(Filename)%(Extension)" />
-    <Compile Include="..\..\backend\StudentClubManagement.Api\Services\**\*.cs" Link="Production\Services\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\..\backend\Models\**\*.cs" Link="Production\Models\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\..\backend\ViewModels\**\*.cs" Link="Production\ViewModels\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\..\backend\Data\**\*.cs" Link="Production\Data\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\..\backend\Authorization\**\*.cs" Link="Production\Authorization\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\..\backend\Services\**\*.cs" Link="Production\Services\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>

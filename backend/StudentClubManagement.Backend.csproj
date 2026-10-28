@@ -17,8 +17,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\StudentClubManagement.Core\StudentClubManagement.Core.csproj" />
-  </ItemGroup>
-
 </Project>
