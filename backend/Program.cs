@@ -5,6 +5,7 @@ using System.Text.Json.Serialization.Metadata;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using StudentClubManagement.Api;
 using StudentClubManagement.Authorization;
@@ -42,6 +43,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 builder.Services.AddAuthorization();
 
+// ---- CORS: cho phép Frontend (trang tĩnh) gọi API. Cấu hình danh sách origin trong Cors:Origins ----
+var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? [];
+builder.Services.AddCors(o => o.AddDefaultPolicy(p => p.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod()));
+
 builder.Services.AddControllers().AddJsonOptions(o =>
 {
     o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -61,9 +66,16 @@ app.UseExceptionHandler(e => e.Run(async ctx =>
     await ctx.Response.WriteAsJsonAsync(new ApiError("Lỗi hệ thống. Vui lòng thử lại sau."));
 }));
 if (!app.Environment.IsDevelopment()) app.UseHsts();
-app.UseAuthentication(); app.UseAuthorization();
+var frontendDir = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "frontend"));
+if (Directory.Exists(frontendDir))
+{
+    var fp = new PhysicalFileProvider(frontendDir);
+    app.UseDefaultFiles(new DefaultFilesOptions { FileProvider = fp });
+    app.UseStaticFiles(new StaticFileOptions { FileProvider = fp });
+}
+app.UseCors(); app.UseAuthentication(); app.UseAuthorization();
 app.MapControllers();
-app.MapGet("/", () => Results.Ok(new { name = "StudentClubManagement API", status = "running" })).AllowAnonymous();
+app.MapGet("/api/health", () => Results.Ok(new { name = "StudentClubManagement API", status = "running" })).AllowAnonymous();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

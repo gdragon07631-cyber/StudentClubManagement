@@ -1,7 +1,0 @@
-@using StudentClubManagement.Models
-@{ var roleLabel = User.IsInRole(AppRoles.Admin) ? "Quản trị hệ thống / Admin" : User.IsInRole(AppRoles.ClubLeader) ? "Trưởng câu lạc bộ" : "Thành viên"; }
-<header class="topbar">
-    <button class="mobile-menu" type="button" aria-label="Mở menu"><svg><use href="#i-menu"/></svg></button>
-    <div class="topbar-search"><svg><use href="#i-search"/></svg><span>Tìm kiếm tại từng trang dữ liệu...</span></div>
-    <div class="topbar-actions"><span class="role-pill">@roleLabel</span><a class="topbar-icon" asp-controller="Notifications" asp-action="Index" aria-label="Thông báo"><svg><use href="#i-bell"/></svg></a><span class="topbar-separator"></span><a class="user-chip" asp-controller="Account" asp-action="ChangePassword"><span class="user-avatar">@((User.Identity?.Name ?? "U")[0].ToString().ToUpperInvariant())</span><span><strong>@User.Identity?.Name</strong><small>@roleLabel</small></span></a></div>
-</header>
